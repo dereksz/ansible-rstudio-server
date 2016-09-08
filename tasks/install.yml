@@ -30,11 +30,10 @@
     - rstudio-server-install-download-directory
 
 - name: install | download deb
-  command: >
-    curl -sS https://download2.rstudio.org/rstudio-server-{{ rstudio_server_version }}-{{ rstudio_server_machine_map[ansible_machine] }}.deb
-      -o {{ rstudio_server_downloads_path }}/rstudio-server_{{ rstudio_server_version }}_{{ rstudio_server_machine_map[ansible_machine] }}.deb
-  args:
-    creates: "{{ rstudio_server_downloads_path }}/rstudio-server_{{ rstudio_server_version }}_{{ rstudio_server_machine_map[ansible_machine] }}.deb"
+  get_url:
+    url: https://s3.amazonaws.com/rstudio-dailybuilds/rstudio-server-{{ rstudio_server_version }}-{{ rstudio_server_machine_map[ansible_machine] }}.deb
+    checksum: "md5:{{ rstudio_server_md5 }}"
+    dest: "{{ rstudio_server_downloads_path }}/rstudio-server_{{ rstudio_server_version }}_{{ rstudio_server_machine_map[ansible_machine] }}.deb"
   tags:
     - rstudio-server-install-download
     - rstudio-server-install-download-deb
